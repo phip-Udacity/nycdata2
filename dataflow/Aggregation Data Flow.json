@@ -30,16 +30,16 @@
 			],
 			"transformations": [
 				{
-					"name": "union1"
+					"name": "union2Datasets"
 				},
 				{
-					"name": "filter1"
+					"name": "filterByFiscalYear"
 				},
 				{
-					"name": "derivedColumn1"
+					"name": "DeriveTotalPaid"
 				},
 				{
-					"name": "aggregate1"
+					"name": "AggregateTotalPaid"
 				}
 			],
 			"scriptLines": [
@@ -95,13 +95,13 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> NYCPayrollHistory2020",
-				"NYCPayrollCurrentYear, NYCPayrollHistory2020 union(byName: true)~> union1",
-				"union1 filter(toInteger(FiscalYear) >= $fiscalyear) ~> filter1",
-				"filter1 derive(TotalPaid = RegularGrossPaid + TotalOTPaid + TotalOtherPay) ~> derivedColumn1",
-				"derivedColumn1 aggregate(groupBy(AgencyName,",
+				"NYCPayrollCurrentYear, NYCPayrollHistory2020 union(byName: true)~> union2Datasets",
+				"union2Datasets filter(toInteger(FiscalYear) >= $fiscalyear) ~> filterByFiscalYear",
+				"filterByFiscalYear derive(TotalPaid = RegularGrossPaid + TotalOTPaid + TotalOtherPay) ~> DeriveTotalPaid",
+				"DeriveTotalPaid aggregate(groupBy(AgencyName,",
 				"          FiscalYear),",
-				"     TotalPaid = sum(TotalPaid)) ~> aggregate1",
-				"aggregate1 sink(allowSchemaDrift: true,",
+				"     TotalPaid = sum(TotalPaid)) ~> AggregateTotalPaid",
+				"AggregateTotalPaid sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          FiscalYear as integer,",
