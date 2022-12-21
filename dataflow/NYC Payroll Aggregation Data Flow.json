@@ -1,5 +1,5 @@
 {
-	"name": "Aggregation Data Flow",
+	"name": "NYC Payroll Aggregation Data Flow",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
